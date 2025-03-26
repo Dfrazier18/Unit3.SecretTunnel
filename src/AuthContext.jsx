@@ -10,9 +10,29 @@ export function AuthProvider({ children }) {
 
   // TODO: signup
 
+  async function signup(username) {
+    try {
+      const response = await fetch(`${API}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: `${username}`,
+        }),
+      });
+
+      const result = await response.json();
+      setToken(result.token);
+      setLocation("TABLET");
+    } catch (e) {
+      console.error("oh no ;(", e);
+    }
+  }
+
   // TODO: authenticate
 
-  const value = { location };
+  const value = { location, signup };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
